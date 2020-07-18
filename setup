@@ -1,0 +1,53 @@
+#!/bin/bash
+DIR=$(readlink -f "$(dirname "$0")")
+
+cd "$DIR" || exit 1
+
+function instruct () {
+  local title=$1
+  local command=$2
+
+    echo -e "\e[0m
+\e[1m$title\e[0m
+\e[2m$command\e[0m"
+}
+
+function requirements () {
+  local has_error=0
+
+  if ! which python > /dev/null 2> /dev/null; then
+    has_error=1
+    instruct "Install python" "pacman -S python"
+  fi
+
+  if ! which yay > /dev/null 2> /dev/null; then
+    has_error=1
+    instruct "Install yay" "\
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si"
+  fi
+
+  if ! which ansible > /dev/null 2> /dev/null; then
+    has_error=1
+    instruct "Install ansible" "pacman -S ansible"
+  fi
+
+  if [ ! -f /usr/share/ansible/plugins/modules/yay ]; then
+    has_error=1
+    instruct "Install ansible-yay" "\
+curl -fLo /usr/share/ansible/plugins/modules/yay --create-dirs \\
+  https://raw.githubusercontent.com/mnussbaum/ansible-yay/master/yay
+chmod -R 755 /usr/share/ansible/plugins"
+  fi
+
+  if [ $has_error -ne 0 ]; then
+    exit 1
+  fi
+}
+
+requirements
+
+python --version | cut -d' ' -f2 | xargs -I{} echo "Python: {}"
+ansible --version | head -n 1 | cut -d' ' -f2 | xargs -I{} echo "Ansible: {}"
+ansible-playbook -K -i inventory.yml main.yml

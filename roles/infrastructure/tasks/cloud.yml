@@ -1,0 +1,6 @@
+- name: Install AWS CLI
+  become: yes
+  pacman: name=aws-cli
+
+- name: Install GCP CLI
+  yay: name=google-cloud-sdk

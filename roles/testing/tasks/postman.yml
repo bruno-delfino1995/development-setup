@@ -1,0 +1,2 @@
+- name: Install Postman
+  yay: name=postman-bin

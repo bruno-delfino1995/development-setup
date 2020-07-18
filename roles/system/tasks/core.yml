@@ -1,0 +1,9 @@
+- name: Install core packages
+  become: yes
+  pacman:
+    name:
+      - git
+      - openssh
+      - curl
+      - bash
+

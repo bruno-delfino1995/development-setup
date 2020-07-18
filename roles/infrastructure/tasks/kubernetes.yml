@@ -1,0 +1,24 @@
+- name: CLIs
+  block:
+    - name: default
+      become: yes
+      pacman: name=kubectl
+    - name: jsonnet
+      yay: name=kubecfg
+    - name: pkgs
+      become: yes
+      pacman: name=helm
+
+- name: Context helpers
+  become: yes
+  pacman: name=kubectx
+
+- name: Logs visualizer
+  yay: name=stern-bin
+
+- name: Cluster scanner 
+  become: yes
+  pacman: name=popeye
+
+- name: Local cluster
+  yay: name=kind

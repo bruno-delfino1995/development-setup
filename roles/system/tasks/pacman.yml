@@ -1,0 +1,29 @@
+- name: Update pacman database
+  become: yes
+  pacman: update_cache=yes
+
+- name: Install pacman tools
+  become: yes
+  pacman:
+    name:
+      - reflector
+      - pacman-contrib
+
+- name: Optimize pacman mirrors
+  become: yes
+  block:
+    - name: check pacman mirrors
+      shell: cat /etc/pacman.d/mirrorlist
+      register: contents
+      changed_when: False
+    - name: check mirrorlist age
+      stat:
+        path: /etc/pacman.d/mirrorlist
+      register: stats
+      changed_when: False
+    - name: fetch new index
+      shell: reflector --protocol https --age 48 --latest 100 --fastest 50 --save /etc/pacman.d/mirrorlist
+      when: |
+        contents.stdout.find('Reflector') == -1
+        or
+        (ansible_date_time.epoch|int - stats.stat.mtime) > (7 * 60 * 60 * 24)
