@@ -6,3 +6,6 @@
     - name: enable
       systemd: name=docker enabled=yes state=started
 
+- name: Install scanner
+  yay: name=snyk
+

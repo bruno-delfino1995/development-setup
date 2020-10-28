@@ -3,9 +3,9 @@
     - name: default
       become: yes
       pacman: name=kubectl
-    - name: jsonnet
-      yay: name=kubecfg
-    - name: pkgs
+    - name: kct
+      yay: name=kct
+    - name: helm
       become: yes
       pacman: name=helm
 
@@ -16,7 +16,7 @@
 - name: Logs visualizer
   yay: name=stern-bin
 
-- name: Cluster scanner 
+- name: Cluster scanner
   become: yes
   pacman: name=popeye
 
