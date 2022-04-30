@@ -4,7 +4,7 @@
       become: yes
       pacman: name=kubectl
     - name: kct
-      yay: name=kct
+      aur: name=kct-bin
     - name: helm
       become: yes
       pacman: name=helm
@@ -14,11 +14,11 @@
   pacman: name=kubectx
 
 - name: Logs visualizer
-  yay: name=stern-bin
+  aur: name=stern-bin
 
 - name: Cluster scanner
   become: yes
   pacman: name=popeye
 
 - name: Local cluster
-  yay: name=kind
+  aur: name=rancher-k3d-bin

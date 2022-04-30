@@ -1,3 +1,3 @@
-- include: pacman.yml
-- include: core.yml
-- include: shell.yml
+- include_tasks: pacman.yml
+- include_tasks: core.yml
+- include_tasks: shell.yml

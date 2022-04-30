@@ -7,4 +7,4 @@
       - skim
 
 - name: Install shell argument parsing helper
-  yay: name=docopts
+  aur: name=docopts

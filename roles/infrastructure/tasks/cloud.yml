@@ -3,4 +3,4 @@
   pacman: name=aws-cli
 
 - name: Install GCP CLI
-  yay: name=google-cloud-sdk
+  aur: name=google-cloud-sdk

@@ -20,25 +20,14 @@ function requirements () {
     instruct "Install python" "pacman -S python"
   fi
 
-  if ! which yay > /dev/null 2> /dev/null; then
-    has_error=1
-    instruct "Install yay" "\
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si"
-  fi
-
   if ! which ansible > /dev/null 2> /dev/null; then
     has_error=1
     instruct "Install ansible" "pacman -S ansible"
   fi
 
-  if [ ! -f /usr/share/ansible/plugins/modules/yay ]; then
+  if ! which ansible-galaxy > /dev/null 2> /dev/null; then
     has_error=1
-    instruct "Install ansible-yay" "\
-curl -fLo /usr/share/ansible/plugins/modules/yay --create-dirs \\
-  https://raw.githubusercontent.com/mnussbaum/ansible-yay/master/yay
-chmod -R 755 /usr/share/ansible/plugins"
+    instruct "Update ansible" "pacman -S ansible"
   fi
 
   if [ $has_error -ne 0 ]; then
@@ -49,5 +38,8 @@ chmod -R 755 /usr/share/ansible/plugins"
 requirements
 
 python --version | cut -d' ' -f2 | xargs -I{} echo "Python: {}"
-ansible --version | head -n 1 | cut -d' ' -f2 | xargs -I{} echo "Ansible: {}"
+ansible --version | head -n 1 | sed -r 's/.*\[.* (.*?)\]$/\1/' | xargs -I{} echo "Ansible: {}"
+ansible-galaxy --version | head -n 1 | sed -r 's/.*\[.* (.*?)\]$/\1/' | xargs -I{} echo "Ansible Galaxy: {}"
+
+ansible-galaxy install -r requirements.yml
 ansible-playbook -K -i inventory.yml main.yml

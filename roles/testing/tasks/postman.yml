@@ -1,2 +1,2 @@
 - name: Install Postman
-  yay: name=postman-bin
+  aur: name=postman-bin
