@@ -3,8 +3,8 @@
     - name: default
       become: yes
       pacman: name=kubectl
-    - name: kct
-      aur: name=kct-bin
+    # - name: kct
+    #   aur: name=kct-bin
     - name: helm
       become: yes
       pacman: name=helm
